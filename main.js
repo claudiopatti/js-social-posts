@@ -66,7 +66,7 @@ for (let i = 0; i < posts.length; i++) {
             <div class="post__header">
                 <div class="post-meta">                    
                     <div class="post-meta__icon">
-                        <img class="profile-pic" src=${posts[i].media} alt="${posts[i].author.name}">                    
+                        <img class="profile-pic" src=${posts[i].author.image} alt="${posts[i].author.name}">                    
                     </div>
                     <div class="post-meta__data">
                         <div class="post-meta__author">${posts[i].author.name}</div>
@@ -76,38 +76,79 @@ for (let i = 0; i < posts.length; i++) {
             </div>
             <div class="post__text">Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.</div>
             <div class="post__image">
-                <img src=${posts[i].author.image} alt="">
+                <img src=${posts[i].media} alt="">
             </div>
             <div class="post__footer">
                 <div class="likes js-likes">
                     <div class="likes__cta">
-                        <a id="bnt-likes" class="like-button  js-like-button" href="#" data-postid="${[i]}">
+                        <a id="bnt-likes" class="like-button  js-like-button" href="#" data-postid="${posts[i].id}">
                             <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                             <span class="like-button__label">Mi Piace</span>
                         </a>
                     </div>
                     <div class="likes__counter">
-                        Piace a <b id="like-counter-${[i]}" class="js-likes-counter">${posts[i].likes}</b> persone
+                        Piace a <b id="like-counter-${posts[i].id}" class="js-likes-counter">${posts[i].likes}</b> persone
                     </div>
                 </div> 
             </div>            
         </div>
 
     `
-    const classRed = document.querySelector('[data-postid="0"]');
-    
-    const buttonChange = document.getElementById('bnt-likes');
+}
 
-    let numberLikes = posts[0].likes;
-    console.log('numberLikes', numberLikes, typeof numberLikes)
-    
-    buttonChange.addEventListener ("click", function(event) {
+const idLikes = []
+
+const buttonChange = document.querySelectorAll('.js-like-button');
+console.log('buttonChange', buttonChange, buttonChange.length)
+
+for (let i = 0; i < buttonChange.length; i++) {
+    buttonChange[i].addEventListener ("click", function(event) {
         event.preventDefault ();
-        classRed.classList.add("like-button--liked");
-        numberLikes ++;
-        document.getElementById('like-counter-0').innerHTML = numberLikes;
+
+        if (!buttonChange[i].classList.contains("like-button--liked")) {
+            
+            buttonChange[i].classList.add("like-button--liked");
+            
+            const postId = this.dataset.postid;
+    
+            const counterElement = document.getElementById('like-counter-' + postId);
+            let likeCounter = parseInt(counterElement.innerText);
+            likeCounter++;
+            counterElement.innerHTML = likeCounter;
+
+            idLikes.push(postId);
+            console.log("hai messo questo id nell'array" , idLikes)
+        }
+        else {
+            buttonChange[i].classList.remove("like-button--liked");
+            
+            const postId = this.dataset.postid;
+    
+            const counterElement = document.getElementById('like-counter-' + postId);
+            let likeCounter = parseInt(counterElement.innerText);
+            likeCounter--;
+            counterElement.innerHTML = likeCounter;
+
+        }
+
+
     });
     
 }
 
-  
+
+
+
+// const classRed = document.getElementById('bnt-likes');
+
+// let numberLikes = posts[0].likes;
+// console.log('numberLikes', numberLikes, typeof numberLikes)
+
+// buttonChange.addEventListener ("click", function(event) {
+//     event.preventDefault ();
+//     classRed.classList.add("like-button--liked");
+//     numberLikes ++;
+//     document.getElementById('like-counter-0').innerHTML = numberLikes;
+// });
+
+
